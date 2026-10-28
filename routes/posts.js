@@ -14,7 +14,7 @@ function postForm(action,post={title:'',content:''}){
         <p><input name="title" placeholder="제목" value="${post.title}" required></p>
         <p><textarea name="content" rows="10" cols="50" required>${post.content}</textarea></p>
         <button>저장</button>       
-    </form>
+        </form>
     `;
 }
 
@@ -115,7 +115,7 @@ router.post('/:id/delete', requireLogin,(req,res)=>{
     const data=load();
     const post=findPost(data,req.params.id);
 
-    if(!psot||post.author !== req.session.user){
+    if(!post||post.author !== req.session.user){
         return res.redirect('/posts');
     }
 
