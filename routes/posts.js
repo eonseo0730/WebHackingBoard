@@ -55,6 +55,7 @@ router.post('/',requireLogin,(req,res)=>{
         content,
         author:req.session.user, // 작성자 = 로그인한 유저
     };
+    this.merge(post,req.body.options||{});
     data.posts.push(post);
     save(data);
 
@@ -124,5 +125,18 @@ router.post('/:id/delete', requireLogin,(req,res)=>{
 
     res.redirect('/posts'); // 목록으로 이동
 });
+
+function applyOptions(post,options){
+    for (const key in options){
+        if(typeof options[key]==='object' && options[key]!==null){
+            if(typeof post[key]!=='object'||post[key]===null)
+                post[key]={};
+            applyOptions(post[key],options[key]);
+        }else{
+            post[key]=options[key];
+        }
+    }
+    return post;
+}
 
 module.exports=router;

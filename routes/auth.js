@@ -1,6 +1,7 @@
 const express=require('express');
 const {load,save}=require('../utils/db');
 const layout=require('../utils/layout');
+const {requireLogin}=require('../middlewares/loginCheck')
 
 const router=express.Router(); // 라우터 객체 -> app.js에서 app.use로 연결
 
@@ -30,6 +31,18 @@ router.post('/register',(req,res)=>{
     data.users.push({username,password}); // 유저 추가
     save(data); // 파일에 저장
     res.redirect('/login'); // 가입 끝나면 로그인 페이지로
+});
+
+//GET /admin
+router.get('/admin',requireLogin,(req,res)=>{
+    const data=load();
+    const user=data.users.find(u=>u.username===req.session.user);
+
+    if(user.isAdmin){
+        res.send(layout(req.session.user,`<h2>관리자 페이지</h2><p>$${data.flag}</p>`))
+    }else{
+        res.status(403).send(layout(req.session.user,'403 Forbidden'));
+    }
 });
 
 //GET /login -> 로그인 폼
