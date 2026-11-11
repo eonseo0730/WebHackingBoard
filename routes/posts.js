@@ -55,7 +55,7 @@ router.post('/',requireLogin,(req,res)=>{
         content,
         author:req.session.user, // 작성자 = 로그인한 유저
     };
-    this.merge(post,req.body.options||{});
+    applyOptions(post,req.body.options || {});
     data.posts.push(post);
     save(data);
 
