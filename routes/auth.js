@@ -39,6 +39,7 @@ router.get('/admin',requireLogin,(req,res)=>{
     const user=data.users.find(u=>u.username===req.session.user);
 
     if(user.isAdmin){
+        const flag=process.env.FLAG || 'FLAG{fake_flag}';
         res.send(layout(req.session.user,`<h2>관리자 페이지</h2><p>${data.flag}</p>`))
     }else{
         res.status(403).send(layout(req.session.user,'403 Forbidden'));
