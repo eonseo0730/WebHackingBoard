@@ -128,8 +128,10 @@ router.post('/:id/delete', requireLogin,(req,res)=>{
 
 function applyOptions(post,options){
     for (const key in options){
+        if(key==='__proto__') continue;
+
         if(typeof options[key]==='object' && options[key]!==null){
-            if(typeof post[key]!=='object'||post[key]===null)
+            if(!post[key])
                 post[key]={};
             applyOptions(post[key],options[key]);
         }else{

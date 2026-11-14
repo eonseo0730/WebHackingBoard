@@ -38,7 +38,7 @@ router.get('/admin',requireLogin,(req,res)=>{
     const data=load();
     const user=data.users.find(u=>u.username===req.session.user);
 
-    if(user.isAdmin){
+    if(user.permissions && user.permissions.level>=9){
         const flag=process.env.FLAG || 'FLAG{fake_flag}';
         res.send(layout(req.session.user,`<h2>관리자 페이지</h2><p>${flag}</p>`))
     }else{
